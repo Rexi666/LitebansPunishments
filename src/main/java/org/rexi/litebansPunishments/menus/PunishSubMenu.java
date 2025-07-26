@@ -30,7 +30,7 @@ public class PunishSubMenu {
             return;
         }
 
-        int slot = 11;
+        int slot = 10;
         Set<String> times = timesSection.getKeys(false);
         for (String time : times) {
             ConfigurationSection timeSection = timesSection.getConfigurationSection(time);

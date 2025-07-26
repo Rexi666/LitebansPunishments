@@ -29,13 +29,16 @@ public class PunishTypeMenu {
                         "%target%", target,
                         "%reason%", reason));
 
-        Set<String> types = actionsSection.getKeys(false); // ban, mute, warn, kick...
+        Set<String> types = actionsSection.getKeys(false);
 
         int slot = 11;
+        boolean addedAnyItem = false;
+
         for (String type : types) {
             ConfigurationSection typeSection = actionsSection.getConfigurationSection(type);
             if (typeSection == null) continue;
 
+            // Añadimos todos los tipos, con o sin tiempos
             ItemStack item = ItemBuilder.simpleFromConfig(typeSection, type, type, type);
 
             String displayName = typeSection.getString("display");
@@ -45,6 +48,12 @@ public class PunishTypeMenu {
             }
 
             inv.setItem(slot++, item);
+            addedAnyItem = true;
+        }
+
+        if (!addedAnyItem) {
+            staff.sendMessage(MessagesManager.get("errors.notypesavailable"));
+            return;
         }
 
         MenuManager.openedTypeMenus.put(staff.getUniqueId(), new MenuManager.TypeMenuData(target, reason));

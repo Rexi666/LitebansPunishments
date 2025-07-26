@@ -7,6 +7,9 @@ errors:
   nopunishmentsection: "&cNo punishments section found in the configuration."
   nopunishmentsection-player: "§cError: configuration file error. Check console for more information."
   nosubmenusection: "&cSubmenu section not configured."
+  novalidpunishment: "&cInvalid punishment type."
+  notypesavailable: "&cNo punishment types available for this section."
+  unknown-punishment: "&cUnknown punishment type %type%."
 
 menu:
   open: "&aOpening punish menu for &e%target%"

@@ -3,6 +3,7 @@ package org.rexi.litebansPunishments.managers;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -58,7 +59,6 @@ public class MenuManager {
                 PersistentDataType.STRING);
 
         if (openedTypeMenus.containsKey(uuid)) {
-            // Menú de tipos (ban, mute, warn, kick)
             if (key == null) {
                 player.sendMessage(ChatColor.RED + "No se pudo determinar el tipo de castigo.");
                 player.closeInventory();
@@ -68,13 +68,55 @@ public class MenuManager {
 
             MenuManager.TypeMenuData data = openedTypeMenus.get(uuid);
 
-            // Cerramos menú actual y abrimos submenú de tiempos
+            // Obtenemos la sección de tiempos del config para este tipo
+            ConfigurationSection typeSection = ConfigManager.getConfig()
+                    .getConfigurationSection("punishments." + data.reason + ".actions." + key);
+
+            if (typeSection == null) {
+                player.sendMessage(ChatColor.RED + "Error al cargar la configuración del castigo.");
+                player.closeInventory();
+                openedTypeMenus.remove(uuid);
+                return;
+            }
+
+            ConfigurationSection timesSection = typeSection.getConfigurationSection("times");
+
+            if (timesSection == null || timesSection.getKeys(false).isEmpty()) {
+                // No hay tiempos, ejecutamos comando directo y cerramos menú
+                String reason_punish = typeSection.getString("reason", key);
+                reason_punish = ChatColor.translateAlternateColorCodes('&', reason_punish);
+
+                String comando;
+                switch (key.toLowerCase()) {
+                    case "ban":
+                        comando = "ban " + data.target + " " + reason_punish;
+                        break;
+                    case "mute":
+                        comando = "mute " + data.target + " " + reason_punish;
+                        break;
+                    case "warn":
+                        comando = "warn " + data.target + " " + reason_punish;
+                        break;
+                    case "kick":
+                        comando = "kick " + data.target + " " + reason_punish;
+                        break;
+                    default:
+                        player.sendMessage(MessagesManager.get("errors.unknown-punishment", "%type%", key));
+                        player.closeInventory();
+                        openedTypeMenus.remove(uuid);
+                        return;
+                }
+
+                player.closeInventory();
+                openedTypeMenus.remove(uuid);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), comando);
+                return;
+            }
+
+            // Si hay tiempos, abrimos submenú
             player.closeInventory();
             openedTypeMenus.remove(uuid);
-
-            // Abrimos submenú pasando target, reason, y el tipo seleccionado (key)
             PunishSubMenu.open(player, data.target, data.reason, key);
-
             return;
         }
 
@@ -127,7 +169,7 @@ public class MenuManager {
                 PersistentDataType.STRING);
 
         if (key == null) {
-            player.sendMessage(ChatColor.RED + "Error: no se pudo determinar el tipo de castigo.");
+            player.sendMessage(MessagesManager.get("errors.novalidpunishment"));
             player.closeInventory();
             openedSubMenus.remove(player.getUniqueId());
             return;
@@ -140,6 +182,29 @@ public class MenuManager {
 
         SubMenuData data = openedSubMenus.get(player.getUniqueId());
 
+        ConfigurationSection config = ConfigManager.getConfig();
+
+        String configReason = null;
+
+        ConfigurationSection timeSection = config.getConfigurationSection(
+                "punishments." + data.reason + ".actions." + key + ".times." + time);
+
+        if (timeSection != null) {
+            configReason = timeSection.getString("reason");
+        }
+
+        if (configReason == null) {
+            // Intentamos la razón general sin tiempos
+            configReason = config.getString("punishments." + data.reason + ".actions." + key + ".reason");
+        }
+
+        if (configReason == null) {
+            // Por si acaso no está, ponemos la key (tipo) como razón fallback
+            configReason = key;
+        }
+
+        configReason = ChatColor.translateAlternateColorCodes('&', configReason);
+
         player.closeInventory();
         openedSubMenus.remove(player.getUniqueId());
 
@@ -149,26 +214,26 @@ public class MenuManager {
         switch (key.toLowerCase()) {
             case "ban":
                 if (time.equalsIgnoreCase("permanent") || time.isEmpty()) {
-                    comando = "ban " + data.target + " " + meta.getDisplayName();
+                    comando = "ban " + data.target + " " + configReason;
                 } else {
-                    comando = "ban " + data.target + " " + time + " " + meta.getDisplayName();
+                    comando = "ban " + data.target + " " + time + " " + configReason;
                 }
                 break;
             case "mute":
                 if (time.equalsIgnoreCase("permanent") || time.isEmpty()) {
-                    comando = "mute " + data.target + " " + meta.getDisplayName();
+                    comando = "mute " + data.target + " " + configReason;
                 } else {
-                    comando = "mute " + data.target + " " + time + " " + meta.getDisplayName();
+                    comando = "mute " + data.target + " " + time + " " + configReason;
                 }
                 break;
             case "warn":
-                comando = "warn " + data.target + " " + meta.getDisplayName();
+                comando = "warn " + data.target + " " + configReason;
                 break;
             case "kick":
-                comando = "kick " + data.target + " " + meta.getDisplayName();
+                comando = "kick " + data.target + " " + configReason;
                 break;
             default:
-                player.sendMessage(ChatColor.RED + "Tipo de castigo desconocido: " + key);
+                player.sendMessage(MessagesManager.get("errors.unknown-punishment", "%type%", key));
                 return;
         }
 

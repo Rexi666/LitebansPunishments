@@ -7,13 +7,16 @@ errors:
   nopunishmentsection: "&cNo punishments section found in the configuration."
   nopunishmentsection-player: "§cError: configuration file error. Check console for more information."
   nosubmenusection: "&cSubmenu section not configured."
+  novalidpunishment: "&cInvalid punishment type."
+  notypesavailable: "&cNo punishment types available for this section."
+  unknown-punishment: "&cUnknown punishment type %type%."
 
 menu:
   open: "&aOpening punish menu for &e%target%"
   history-opened: "&7History of &e%target%"
   menu-title: "&aPunish &e%target%"
   type-title: "&aPunish &e%target% &7(%reason%)"
-  submenu-title: "&aPunish &e%target% &7(%reason% %type%)"
+  submenu-title: "&aPunish &e%target% &7(%reason% - %type%)"
   clickToSelect: "&eClick to select"
 
 reload:

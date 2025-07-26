@@ -1,40 +1,4 @@
 punishments:
-  xray:
-    item: DIAMOND_ORE
-    name: "&cXRay"
-    actions:
-      ban:
-        item: REDSTONE_BLOCK
-        display: "&4Ban"
-        times:
-          1d:
-            display: "&a1 Day"
-          1w:
-            display: "&a1 Week"
-          1mo:
-            display: "&a1 Month"
-          permanent:
-            display: "&cPermanent"
-      mute:
-        item: NOTE_BLOCK
-        display: "&6Mute"
-        times:
-          1d:
-            display: "&a1 Day"
-          1w:
-            display: "&a1 Week"
-          1mo:
-            display: "&a1 Month"
-          permanent:
-            display: "&cPermanent"
-      warn:
-        item: PAPER
-        display: "&eWarn"
-        times: {}
-      kick:
-        item: BARRIER
-        display: "&cKick"
-        times: {}
   hacks:
     item: DIAMOND_SWORD
     name: "&cHacks"
@@ -44,13 +8,59 @@ punishments:
         display: "&4Ban"
         times:
           1d:
-            display: "&aFirst time"
+            display: "&aFirst time (1d)"
+            reason: "&bHacks #1"
+            item: REDSTONE
           1w:
-            display: "&aSecond time"
+            display: "&aSecond time (1w)"
+            reason: "&bHacks #2"
+            item: REDSTONE
           1mo:
-            display: "&aThird time"
+            display: "&aThird time (1mo)"
+            reason: "&bHacks #3"
+            item: REDSTONE
           permanent:
-            display: "&cFourth time"
+            display: "&cFourth time (perma)"
+            reason: "&bHacks #4"
+            item: REDSTONE
+  toxic:
+    item: SKELETON_SKULL
+    name: "&cToxic"
+    actions:
+      mute:
+        item: NOTE_BLOCK
+        display: "&6Mute"
+        times:
+          1d:
+            display: "&a#1 1 Day"
+            reason: "&bToxic #1"
+            item: LAPIS_LAZULI
+          1w:
+            display: "&a#2 1 Week"
+            reason: "&bToxic #2"
+            item: LAPIS_LAZULI
+          1mo:
+            display: "&a#3 1 Month"
+            reason: "&bToxic #3"
+            item: LAPIS_LAZULI
+          permanent:
+            display: "&c#4 Permanent"
+            reason: "&bToxic #4"
+            item: LAPIS_LAZULI
+  tpakill:
+    item: LAVA_BUCKET
+    name: "&cTpa-Kill"
+    actions:
+      warn:
+        item: PAPER
+        display: "&eWarn"
+        times: {}
+        reason: "&bTpakill #1"
+      kick:
+        item: BARRIER
+        display: "&cKick"
+        times: {}
+        reason: "&bTpakill #2"
 history:
   item: BOOK
   name: "&bHistory"
