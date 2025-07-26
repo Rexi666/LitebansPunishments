@@ -60,7 +60,7 @@ public class MenuManager {
 
         if (openedTypeMenus.containsKey(uuid)) {
             if (key == null) {
-                player.sendMessage(ChatColor.RED + "No se pudo determinar el tipo de castigo.");
+                player.sendMessage(MessagesManager.get("errors.novalidpunishment"));
                 player.closeInventory();
                 openedTypeMenus.remove(uuid);
                 return;
@@ -73,7 +73,7 @@ public class MenuManager {
                     .getConfigurationSection("punishments." + data.reason + ".actions." + key);
 
             if (typeSection == null) {
-                player.sendMessage(ChatColor.RED + "Error al cargar la configuración del castigo.");
+                player.sendMessage(MessagesManager.get("errors.nopunishmentsection-player"));
                 player.closeInventory();
                 openedTypeMenus.remove(uuid);
                 return;

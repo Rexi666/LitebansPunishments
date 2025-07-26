@@ -1,9 +1,11 @@
 package org.rexi.litebansPunishments.items;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -11,6 +13,7 @@ import org.rexi.litebansPunishments.LitebansPunishments;
 import org.rexi.litebansPunishments.managers.MessagesManager;
 
 import java.util.Collections;
+import java.util.List;
 
 public class ItemBuilder {
     public static ItemStack fromConfig(org.bukkit.configuration.file.FileConfiguration config, String path, String name) {
@@ -25,7 +28,21 @@ public class ItemBuilder {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(display.replace("&", "§"));
-        meta.setLore(Collections.singletonList(MessagesManager.getRaw("menu.clickToSelect")));
+
+        meta.addItemFlags(
+                ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_UNBREAKABLE,
+                ItemFlag.HIDE_POTION_EFFECTS,
+                ItemFlag.HIDE_DYE
+        );
+
+        meta.lore(
+                List.of(
+                        Component.text(" "),
+                        Component.text(MessagesManager.getRaw("menu.clickToSelect"))
+                )
+        );
         item.setItemMeta(meta);
 
         return item;
@@ -41,14 +58,40 @@ public class ItemBuilder {
             mat = Material.STONE;
         }
 
-        // Cambiar de "name" a "display"
         String display = section.getString("display", name);
         display = ChatColor.translateAlternateColorCodes('&', display);
 
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(display);
-        meta.setLore(Collections.singletonList(MessagesManager.getRaw("menu.clickToSelect")));
+
+        meta.addItemFlags(
+                ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_UNBREAKABLE,
+                ItemFlag.HIDE_POTION_EFFECTS,
+                ItemFlag.HIDE_DYE
+        );
+
+
+        String reason = section.getString("reason");
+        if (reason != null) {
+            meta.lore(
+                    List.of(
+                            Component.text(" "),
+                            Component.text(MessagesManager.getRaw("menu.reason", "%reason%", reason)),
+                            Component.text(" "),
+                            Component.text(MessagesManager.getRaw("menu.clickToSelect"))
+                    )
+            );
+        } else {
+            meta.lore(
+                    List.of(
+                            Component.text(" "),
+                            Component.text(MessagesManager.getRaw("menu.clickToSelect"))
+                    )
+            );
+        }
 
         NamespacedKey key = new NamespacedKey(LitebansPunishments.getInstance(), "punish_key");
         NamespacedKey timeKey = new NamespacedKey(LitebansPunishments.getInstance(), "punish_time");
