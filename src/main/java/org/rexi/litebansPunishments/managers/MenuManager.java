@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.rexi.litebansPunishments.LitebansPunishments;
+import org.rexi.litebansPunishments.menus.PunishMenu;
 import org.rexi.litebansPunishments.menus.PunishSubMenu;
 import org.rexi.litebansPunishments.menus.PunishTypeMenu;
 
@@ -59,6 +60,23 @@ public class MenuManager {
                 PersistentDataType.STRING);
 
         if (openedTypeMenus.containsKey(uuid)) {
+            String clickedName = ChatColor.stripColor(meta.getDisplayName());
+            String backName = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&',
+                    ConfigManager.getConfig().getString("back.name", "Back")));
+
+            if (clickedName.equalsIgnoreCase(backName)) {
+                // Volver al menú anterior (razones)
+                TypeMenuData data = openedTypeMenus.remove(uuid);
+                MenuManager.openedMenus.put(uuid, data.target);
+                player.closeInventory();
+                Bukkit.getScheduler().runTask(LitebansPunishments.getInstance(), () -> {
+                    // Reabrir el menú principal después de un tick
+                    // Asegúrate de tener tu método PunishMenu.open
+                    PunishMenu.openMainMenu(player, data.target);
+                });
+                return;
+            }
+
             if (key == null) {
                 player.sendMessage(MessagesManager.get("errors.novalidpunishment"));
                 player.closeInventory();
@@ -159,6 +177,19 @@ public class MenuManager {
         if (!clickedItem.hasItemMeta() || !clickedItem.getItemMeta().hasDisplayName()) return;
 
         ItemMeta meta = clickedItem.getItemMeta();
+
+        String clickedName = ChatColor.stripColor(meta.getDisplayName());
+        String backName = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&',
+                ConfigManager.getConfig().getString("back.name", "Back")));
+
+        if (clickedName.equalsIgnoreCase(backName)) {
+            SubMenuData data = openedSubMenus.remove(player.getUniqueId());
+            player.closeInventory();
+            Bukkit.getScheduler().runTask(LitebansPunishments.getInstance(), () -> {
+                PunishTypeMenu.open(player, data.target, data.reason);
+            });
+            return;
+        }
 
         String key = meta.getPersistentDataContainer().get(
                 new NamespacedKey(LitebansPunishments.getInstance(), "punish_key"),

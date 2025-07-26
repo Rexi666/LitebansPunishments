@@ -64,3 +64,6 @@ punishments:
 history:
   item: BOOK
   name: "&bHistory"
+back:
+  item: DARK_OAK_DOOR
+  name: "&bBack"

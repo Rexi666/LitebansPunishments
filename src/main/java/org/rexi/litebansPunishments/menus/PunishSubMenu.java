@@ -47,6 +47,10 @@ public class PunishSubMenu {
             inv.setItem(slot++, item);
         }
 
+        ConfigurationSection backSection = ConfigManager.getConfig().getConfigurationSection("back");
+        ItemStack backItem = ItemBuilder.fromSimpleSection(backSection, "back");
+        inv.setItem(18, backItem);
+
         MenuManager.openedSubMenus.put(staff.getUniqueId(), new MenuManager.SubMenuData(target, reason, type));
         staff.openInventory(inv);
     }

@@ -118,4 +118,46 @@ public class ItemBuilder {
         }
         return item;
     }
+
+    public static ItemStack fromSimpleSection(ConfigurationSection section, String keyName) {
+        if (section == null) return new ItemStack(Material.STONE);
+
+        Material mat;
+        try {
+            mat = Material.valueOf(section.getString("item", "STONE").toUpperCase());
+        } catch (IllegalArgumentException e) {
+            mat = Material.STONE;
+        }
+
+        String name = ChatColor.translateAlternateColorCodes('&', section.getString("name", keyName));
+
+        ItemStack item = new ItemStack(mat);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+
+        meta.lore(
+                List.of(
+                        Component.text(" "),
+                        Component.text(MessagesManager.getRaw("menu.clickToSelect"))
+                )
+        );
+
+        meta.addItemFlags(
+                ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_UNBREAKABLE,
+                ItemFlag.HIDE_POTION_EFFECTS,
+                ItemFlag.HIDE_DYE
+        );
+
+        meta.getPersistentDataContainer().set(
+                new NamespacedKey(LitebansPunishments.getInstance(), "punish_key"),
+                PersistentDataType.STRING,
+                keyName
+        );
+
+        item.setItemMeta(meta);
+        return item;
+    }
+
 }

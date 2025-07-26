@@ -16,6 +16,7 @@ import java.util.Set;
 public class PunishTypeMenu {
 
     public static void open(Player staff, String target, String reason) {
+
         ConfigurationSection actionsSection = ConfigManager.getConfig()
                 .getConfigurationSection("punishments." + reason + ".actions");
 
@@ -55,6 +56,10 @@ public class PunishTypeMenu {
             staff.sendMessage(MessagesManager.get("errors.notypesavailable"));
             return;
         }
+
+        ConfigurationSection backSection = ConfigManager.getConfig().getConfigurationSection("back");
+        ItemStack backItem = ItemBuilder.fromSimpleSection(backSection, "back");
+        inv.setItem(18, backItem);
 
         MenuManager.openedTypeMenus.put(staff.getUniqueId(), new MenuManager.TypeMenuData(target, reason));
         staff.openInventory(inv);
