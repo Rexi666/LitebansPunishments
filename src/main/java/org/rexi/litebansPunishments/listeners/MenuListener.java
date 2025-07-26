@@ -12,10 +12,12 @@ public class MenuListener implements Listener {
         if (!(e.getWhoClicked() instanceof Player)) return;
         Player player = (Player) e.getWhoClicked();
 
-        if (MenuManager.openedMenus.containsKey(player.getUniqueId())) {
-            MenuManager.handleClick(e);
+        if (MenuManager.openedTypeMenus.containsKey(player.getUniqueId())) {
+            MenuManager.handleClick(e);  // Para manejar menú de tipos
         } else if (MenuManager.openedSubMenus.containsKey(player.getUniqueId())) {
-            MenuManager.handleSubMenuClick(e);
+            MenuManager.handleSubMenuClick(e);  // Para manejar menú de tiempos
+        } else if (MenuManager.openedMenus.containsKey(player.getUniqueId())) {
+            MenuManager.handleClick(e);  // Si usas otro menú principal
         }
     }
 }

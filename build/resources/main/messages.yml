@@ -12,7 +12,8 @@ menu:
   open: "&aOpening punish menu for &e%target%"
   history-opened: "&7History of &e%target%"
   menu-title: "&aPunish &e%target%"
-  submenu-title: "&aPunish &e%target% &7(%reason%)"
+  type-title: "&aPunish &e%target% &7(%reason%)"
+  submenu-title: "&aPunish &e%target% &7(%reason% %type%)"
   clickToSelect: "&eClick to select"
 
 reload:

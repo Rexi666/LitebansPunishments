@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.rexi.litebansPunishments.LitebansPunishments;
 import org.rexi.litebansPunishments.menus.PunishSubMenu;
+import org.rexi.litebansPunishments.menus.PunishTypeMenu;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -17,48 +18,91 @@ import java.util.UUID;
 public class MenuManager {
     public static HashMap<UUID, String> openedMenus = new HashMap<>();
     public static HashMap<UUID, SubMenuData> openedSubMenus = new HashMap<>();
+    public static HashMap<UUID, TypeMenuData> openedTypeMenus = new HashMap<>();
+
+    public static class SubMenuData {
+        public final String target;
+        public final String reason;
+        public final String type;
+
+        public SubMenuData(String target, String reason, String type) {
+            this.target = target;
+            this.reason = reason;
+            this.type = type;
+        }
+    }
+
+    public static class TypeMenuData {
+        public final String target;
+        public final String reason;
+
+        public TypeMenuData(String target, String reason) {
+            this.target = target;
+            this.reason = reason;
+        }
+    }
 
     public static void handleClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
-        if (!openedMenus.containsKey(player.getUniqueId())) return;
+        UUID uuid = player.getUniqueId();
+
         e.setCancelled(true);
 
         ItemStack clickedItem = e.getCurrentItem();
         if (clickedItem == null || clickedItem.getType().isAir()) return;
         if (!clickedItem.hasItemMeta() || !clickedItem.getItemMeta().hasDisplayName()) return;
 
-        String target = openedMenus.get(player.getUniqueId());
-
         ItemMeta meta = clickedItem.getItemMeta();
         String key = meta.getPersistentDataContainer().get(
                 new NamespacedKey(LitebansPunishments.getInstance(), "punish_key"),
                 PersistentDataType.STRING);
 
-        if (key == null) {
-            // Si no tiene la key, puede ser el item "history"
-            String historyName = ConfigManager.getConfig().getString("history.name", "&bHistory");
-            String historyNameStripped = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', historyName));
-            String clickedName = ChatColor.stripColor(meta.getDisplayName());
-
-            if (clickedName.equalsIgnoreCase(historyNameStripped) || clickedName.contains(historyNameStripped)) {
+        if (openedTypeMenus.containsKey(uuid)) {
+            // Menú de tipos (ban, mute, warn, kick)
+            if (key == null) {
+                player.sendMessage(ChatColor.RED + "No se pudo determinar el tipo de castigo.");
                 player.closeInventory();
-                Bukkit.dispatchCommand(player, "history " + target);
+                openedTypeMenus.remove(uuid);
+                return;
             }
+
+            MenuManager.TypeMenuData data = openedTypeMenus.get(uuid);
+
+            // Cerramos menú actual y abrimos submenú de tiempos
+            player.closeInventory();
+            openedTypeMenus.remove(uuid);
+
+            // Abrimos submenú pasando target, reason, y el tipo seleccionado (key)
+            PunishSubMenu.open(player, data.target, data.reason, key);
 
             return;
         }
 
-        // Abre submenú con la key correcta
-        PunishSubMenu.open(player, target, key);
-    }
+        if (openedMenus.containsKey(uuid)) {
+            // Menú principal (razones)
+            if (key == null) {
+                // Puede ser el botón "history"
+                String historyName = ConfigManager.getConfig().getString("history.name", "&bHistory");
+                String historyNameStripped = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', historyName));
+                String clickedName = ChatColor.stripColor(meta.getDisplayName());
 
-    public static class SubMenuData {
-        public final String target;
-        public final String reason;
+                if (clickedName.equalsIgnoreCase(historyNameStripped) || clickedName.contains(historyNameStripped)) {
+                    String target = openedMenus.get(uuid);
+                    player.closeInventory();
+                    Bukkit.dispatchCommand(player, "history " + target);
+                }
+                return;
+            }
 
-        public SubMenuData(String target, String reason) {
-            this.target = target;
-            this.reason = reason;
+            // Abrimos menú de tipos con la razón seleccionada
+            String target = openedMenus.get(uuid);
+            String reason = key;  // En menú principal guardamos la "reason" en la key
+
+            player.closeInventory();
+            openedMenus.remove(uuid);
+
+            PunishTypeMenu.open(player, target, reason);
+            return;
         }
     }
 

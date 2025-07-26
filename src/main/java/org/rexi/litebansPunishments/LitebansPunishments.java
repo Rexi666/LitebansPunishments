@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.rexi.litebansPunishments.commands.PunishCommand;
 import org.rexi.litebansPunishments.commands.ReloadCommand;
+import org.rexi.litebansPunishments.listeners.MenuCloseListener;
 import org.rexi.litebansPunishments.listeners.MenuListener;
 
 import java.io.File;
@@ -22,6 +23,7 @@ public final class LitebansPunishments extends JavaPlugin {
         getCommand("punish").setExecutor(new PunishCommand());
         getCommand("punishreload").setExecutor(new ReloadCommand());
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
+        getServer().getPluginManager().registerEvents(new MenuCloseListener(), this);
     }
 
     @Override

@@ -44,13 +44,13 @@ punishments:
         display: "&4Ban"
         times:
           1d:
-            display: "&a1 Day"
+            display: "&aFirst time"
           1w:
-            display: "&a1 Week"
+            display: "&aSecond time"
           1mo:
-            display: "&a1 Month"
+            display: "&aThird time"
           permanent:
-            display: "&cPermanent"
+            display: "&cFourth time"
 history:
   item: BOOK
   name: "&bHistory"
