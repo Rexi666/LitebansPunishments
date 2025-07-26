@@ -1,0 +1,52 @@
+package org.rexi.litebansPunishments;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.rexi.litebansPunishments.commands.PunishCommand;
+import org.rexi.litebansPunishments.commands.ReloadCommand;
+import org.rexi.litebansPunishments.listeners.MenuListener;
+
+import java.io.File;
+
+public final class LitebansPunishments extends JavaPlugin {
+    private static LitebansPunishments instance;
+    private File messagesFile;
+    private FileConfiguration messagesConfig;
+
+    @Override
+    public void onEnable() {
+        instance = this;
+        saveDefaultConfig();
+        loadMessages();
+        getCommand("punish").setExecutor(new PunishCommand());
+        getCommand("punishreload").setExecutor(new ReloadCommand());
+        getServer().getPluginManager().registerEvents(new MenuListener(), this);
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+    }
+
+    public static LitebansPunishments getInstance() {
+        return instance;
+    }
+
+    private void loadMessages() {
+        messagesFile = new File(getDataFolder(), "messages.yml");
+        if (!messagesFile.exists()) {
+            saveResource("messages.yml", false);
+        }
+        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+    }
+
+    public FileConfiguration getMessages() {
+        return messagesConfig;
+    }
+
+    public void reloadMessages() {
+        messagesFile = new File(getDataFolder(), "messages.yml");
+        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+    }
+}

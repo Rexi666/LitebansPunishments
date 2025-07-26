@@ -1,0 +1,13 @@
+name: LitebansPunishments
+version: '1.0'
+main: org.rexi.litebansPunishments.LitebansPunishments
+api-version: '1.18'
+author: Rexi666
+depend: [LiteBans]
+commands:
+  punish:
+    usage: /punish <player>
+    description: Opens the punish menu for a player.
+  punishreload:
+    usage: /punishreload
+    description: Reloads the plugin configuration.

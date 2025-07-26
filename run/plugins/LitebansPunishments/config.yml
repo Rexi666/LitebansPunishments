@@ -1,0 +1,31 @@
+punishments:
+  XRay:
+    item: DIAMOND_ORE
+    name: "&cXRay"
+    actions:
+      ban:
+        item: REDSTONE_BLOCK
+        display: "&4Ban"
+        times:
+          - "1d"
+          - "1w"
+          - "1mo"
+          - "permanent"
+      mute:
+        item: NOTE_BLOCK
+        display: "&6Mute"
+        times:
+          - "1h"
+          - "1d"
+          - "permanent"
+      warn:
+        item: PAPER
+        display: "&eWarn"
+        times: []
+      kick:
+        item: BARRIER
+        display: "&cKick"
+        times: []
+history:
+  item: BOOK
+  name: "&bHistory"

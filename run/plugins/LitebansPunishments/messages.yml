@@ -1,0 +1,15 @@
+prefix: "&8[&cLitebansPunishments&8] "
+errors:
+  player-not-found: "&cPlayer not found."
+  only-players: "&cOnly players can execute this command."
+  no-permission: "&cYou do not have permission to use this command."
+  usage: "&cUse: /punish <player>"
+
+menu:
+  open: "&aOpening punish menu for &e%target%"
+  history-opened: "&7History of &e%target%"
+  menu-title: "&aPunish &e%target%"
+  submenu-title: "&aPunish &e%target% &7(%reason%)"
+
+reload:
+  success: "&aConfiguration reloaded successfully."
