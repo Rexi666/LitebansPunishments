@@ -1,10 +1,14 @@
 package org.rexi.litebansPunishments.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+import org.rexi.litebansPunishments.LitebansPunishments;
 import org.rexi.litebansPunishments.items.ItemBuilder;
 import org.rexi.litebansPunishments.managers.ConfigManager;
 import org.rexi.litebansPunishments.managers.MenuManager;
@@ -27,11 +31,24 @@ public class PunishMenu {
 
         int slot = 0;
         for (String key : keys) {
-            inv.setItem(slot++, ConfigManager.getItem("punishments." + key, key));
+            ItemStack item = ConfigManager.getItem("punishments." + key, key);
+
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null) {
+                // Guarda la key real en el PersistentDataContainer
+                meta.getPersistentDataContainer().set(
+                        new NamespacedKey(LitebansPunishments.getInstance(), "punish_key"),
+                        PersistentDataType.STRING,
+                        key
+                );
+                item.setItemMeta(meta);
+            }
+
+            inv.setItem(slot++, item);
         }
 
         ConfigurationSection historySection = ConfigManager.getConfig().getConfigurationSection("history");
-        ItemStack historyItem = ItemBuilder.simpleFromConfig(historySection, "History");
+        ItemStack historyItem = ItemBuilder.simpleFromConfig(historySection, "History", null, null);
         inv.setItem(53, historyItem);
 
         MenuManager.openedMenus.put(staff.getUniqueId(), target);

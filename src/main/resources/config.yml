@@ -7,25 +7,50 @@ punishments:
         item: REDSTONE_BLOCK
         display: "&4Ban"
         times:
-          - "1d"
-          - "1w"
-          - "1mo"
-          - "permanent"
+          1d:
+            display: "&a1 Day"
+          1w:
+            display: "&a1 Week"
+          1mo:
+            display: "&a1 Month"
+          permanent:
+            display: "&cPermanent"
       mute:
         item: NOTE_BLOCK
         display: "&6Mute"
         times:
-          - "1h"
-          - "1d"
-          - "permanent"
+          1d:
+            display: "&a1 Day"
+          1w:
+            display: "&a1 Week"
+          1mo:
+            display: "&a1 Month"
+          permanent:
+            display: "&cPermanent"
       warn:
         item: PAPER
         display: "&eWarn"
-        times: []
+        times: {}
       kick:
         item: BARRIER
         display: "&cKick"
-        times: []
+        times: {}
+  hacks:
+    item: DIAMOND_SWORD
+    name: "&cHacks"
+    actions:
+      ban:
+        item: REDSTONE_BLOCK
+        display: "&4Ban"
+        times:
+          1d:
+            display: "&a1 Day"
+          1w:
+            display: "&a1 Week"
+          1mo:
+            display: "&a1 Month"
+          permanent:
+            display: "&cPermanent"
 history:
   item: BOOK
   name: "&bHistory"

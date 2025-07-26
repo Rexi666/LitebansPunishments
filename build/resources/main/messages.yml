@@ -6,6 +6,7 @@ errors:
   usage: "&cUse: /punish <player>"
   nopunishmentsection: "&cNo punishments section found in the configuration."
   nopunishmentsection-player: "§cError: configuration file error. Check console for more information."
+  nosubmenusection: "&cSubmenu section not configured."
 
 menu:
   open: "&aOpening punish menu for &e%target%"
