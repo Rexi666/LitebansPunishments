@@ -1,5 +1,7 @@
 package org.rexi.litebansPunishments;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,11 +26,15 @@ public final class LitebansPunishments extends JavaPlugin {
         getCommand("punishreload").setExecutor(new ReloadCommand());
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new MenuCloseListener(), this);
+        Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&aLitebansPunishments has been enabled!"));
+        Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&bThank you for using Rexi666 plugins!"));
     }
+
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&cLitebansPunishments has been disabled!"));
+        Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&bThank you for using Rexi666 plugins!"));
     }
 
     public static LitebansPunishments getInstance() {
