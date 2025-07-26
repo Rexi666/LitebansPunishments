@@ -11,14 +11,14 @@ public class ReloadCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("litebanspunishments.reload")) {
-            sender.sendMessage(MessagesManager.getRaw("errors.no-permission"));
+            sender.sendMessage(MessagesManager.get("errors.no-permission"));
             return true;
         }
 
         LitebansPunishments.getInstance().reloadConfig();
         LitebansPunishments.getInstance().reloadMessages();
 
-        sender.sendMessage(MessagesManager.getRaw("reload.success"));
+        sender.sendMessage(MessagesManager.get("reload.success"));
         return true;
     }
 }

@@ -127,7 +127,7 @@ public class MenuManager {
 
                 player.closeInventory();
                 openedTypeMenus.remove(uuid);
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), comando);
+                Bukkit.dispatchCommand(player, comando);
                 return;
             }
 
