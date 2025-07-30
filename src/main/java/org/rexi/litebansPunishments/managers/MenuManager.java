@@ -104,13 +104,23 @@ public class MenuManager {
                 String reason_punish = typeSection.getString("reason", key);
                 reason_punish = ChatColor.translateAlternateColorCodes('&', reason_punish);
 
+                boolean ip = typeSection.getBoolean("ip", false);
+
                 String comando;
                 switch (key.toLowerCase()) {
                     case "ban":
-                        comando = "ban " + data.target + " " + reason_punish;
+                        if (ip) {
+                            comando = "ipban " + data.target + " " + reason_punish;
+                        } else {
+                            comando = "ban " + data.target + " " + reason_punish;
+                        }
                         break;
                     case "mute":
-                        comando = "mute " + data.target + " " + reason_punish;
+                        if (ip) {
+                            comando = "ipmute " + data.target + " " + reason_punish;
+                        } else {
+                            comando = "mute " + data.target + " " + reason_punish;
+                        }
                         break;
                     case "warn":
                         comando = "warn " + data.target + " " + reason_punish;
@@ -234,7 +244,7 @@ public class MenuManager {
             configReason = key;
         }
 
-        configReason = ChatColor.translateAlternateColorCodes('&', configReason);
+        boolean ip = timeSection != null && timeSection.getBoolean("ip", false);
 
         player.closeInventory();
         openedSubMenus.remove(player.getUniqueId());
@@ -244,17 +254,33 @@ public class MenuManager {
 
         switch (key.toLowerCase()) {
             case "ban":
-                if (time.equalsIgnoreCase("permanent") || time.isEmpty()) {
-                    comando = "ban " + data.target + " " + configReason;
+                if (ip) {
+                    if (time.equalsIgnoreCase("permanent") || time.isEmpty()) {
+                        comando = "ipban " + data.target + " " + configReason;
+                    } else {
+                        comando = "ipban " + data.target + " " + time + " " + configReason;
+                    }
                 } else {
-                    comando = "ban " + data.target + " " + time + " " + configReason;
+                    if (time.equalsIgnoreCase("permanent") || time.isEmpty()) {
+                        comando = "ban " + data.target + " " + configReason;
+                    } else {
+                        comando = "ban " + data.target + " " + time + " " + configReason;
+                    }
                 }
                 break;
             case "mute":
-                if (time.equalsIgnoreCase("permanent") || time.isEmpty()) {
-                    comando = "mute " + data.target + " " + configReason;
+                if (ip) {
+                    if (time.equalsIgnoreCase("permanent") || time.isEmpty()) {
+                        comando = "ipmute " + data.target + " " + configReason;
+                    } else {
+                        comando = "ipmute " + data.target + " " + time + " " + configReason;
+                    }
                 } else {
-                    comando = "mute " + data.target + " " + time + " " + configReason;
+                    if (time.equalsIgnoreCase("permanent") || time.isEmpty()) {
+                        comando = "mute " + data.target + " " + configReason;
+                    } else {
+                        comando = "mute " + data.target + " " + time + " " + configReason;
+                    }
                 }
                 break;
             case "warn":

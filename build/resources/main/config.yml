@@ -1,6 +1,6 @@
 punishments:
   hacks:
-    item: DIAMOND_SWORD
+    item: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGUyYzZiNjMyN2Q1ZDdkNjE2Y2RhYjM1NDMxM2E5NmQ2MTk1NzA4NGZlZTJkNDE5ZTVlODgzZTg2NjA5NjVkOSJ9fX0=
     name: "&cHacks"
     actions:
       ban:
@@ -23,6 +23,7 @@ punishments:
             display: "&cFourth time (perma)"
             reason: "&bHacks #4"
             item: REDSTONE
+            ip: true
   toxic:
     item: SKELETON_SKULL
     name: "&cToxic"
