@@ -1,6 +1,7 @@
 package org.rexi.litebansPunishments.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,11 +27,7 @@ public class PunishCommand implements CommandExecutor {
             return true;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
-        if (target == null) {
-            sender.sendMessage(MessagesManager.get("errors.player-not-found"));
-            return true;
-        }
+        OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
 
         PunishMenu.openMainMenu((Player) sender, target.getName());
         return true;

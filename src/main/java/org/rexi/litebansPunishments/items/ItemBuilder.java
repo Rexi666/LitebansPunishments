@@ -192,29 +192,7 @@ public class ItemBuilder {
     }
 
     public static ItemStack getCustomHead(String base64) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
-
-        if (skullMeta == null) return head;
-
-        GameProfile profile = new GameProfile(UUID.randomUUID(), "CustomHead");
-        profile.getProperties().put("textures", new Property("textures", base64));
-
-        try {
-            Field profileField = skullMeta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-
-            Object current = profileField.get(skullMeta);
-            if (current == null || !current.equals(profile)) {
-                profileField.set(skullMeta, profile);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        head.setItemMeta(skullMeta);
-        return head;
+        return SkullCreator.itemFromBase64(base64);
     }
-
 
 }
