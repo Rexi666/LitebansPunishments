@@ -195,13 +195,19 @@ public class ItemBuilder {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
 
+        if (skullMeta == null) return head;
+
         GameProfile profile = new GameProfile(UUID.randomUUID(), "CustomHead");
         profile.getProperties().put("textures", new Property("textures", base64));
 
         try {
             Field profileField = skullMeta.getClass().getDeclaredField("profile");
             profileField.setAccessible(true);
-            profileField.set(skullMeta, profile);
+
+            Object current = profileField.get(skullMeta);
+            if (current == null || !current.equals(profile)) {
+                profileField.set(skullMeta, profile);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -209,5 +215,6 @@ public class ItemBuilder {
         head.setItemMeta(skullMeta);
         return head;
     }
+
 
 }

@@ -64,7 +64,7 @@ punishments:
         reason: "&bTpakill #2"
 history:
   item: BOOK
-  name: "&bHistory"
+  display: "&bHistory"
 back:
   item: DARK_OAK_DOOR
-  name: "&bBack"
+  display: "&bBack"

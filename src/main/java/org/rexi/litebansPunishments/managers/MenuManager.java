@@ -152,7 +152,7 @@ public class MenuManager {
             // Menú principal (razones)
             if (key == null) {
                 // Puede ser el botón "history"
-                String historyName = ConfigManager.getConfig().getString("history.name", "&bHistory");
+                String historyName = ConfigManager.getConfig().getString("history.display", "&bHistory");
                 String historyNameStripped = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', historyName));
                 String clickedName = ChatColor.stripColor(meta.getDisplayName());
 
