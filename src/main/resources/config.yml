@@ -67,4 +67,4 @@ history:
   display: "&bHistory"
 back:
   item: DARK_OAK_DOOR
-  display: "&bBack"
+  name: "&bBack"
